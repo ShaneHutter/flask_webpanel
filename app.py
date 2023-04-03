@@ -2,7 +2,9 @@
 """Generic Flask Frontend (Public site) and Backend (Site panel)
 """
 
-from eventlet   import monkey_patch ; monkey_patch()
+#from eventlet   import monkey_patch ; monkey_patch()
+
+from fwp.config import Config
 
 from flask          import (
     Flask, 
@@ -51,9 +53,11 @@ redis_url = "redis://{host}:{port}".format( **redis_conf )
 redis = Redis( **redis_conf )
 
 # Session Setup
-_secret_key = redis.get( f"{app_name}_session_key" )
+_session_key_name = f"{app_name}_session_key"
+_secret_key = redis.get( _session_key_name )
 if not _secret_key:
-    _secret_key = gen_session_key() # Add to fwp/session.py
+    _secret_key = gen_session_key()
+    redis.set( _session_key_name , _secret_key )
 
 # Start Session
 Session( app )
@@ -71,3 +75,8 @@ _socketio = {
     "engineio_logger": True,
     }
 socketio = SocketIO( app , **_socketio )
+
+@app.route( "/" )
+def index():
+    data = {}
+    return render_template( "index.jinja", data = data )

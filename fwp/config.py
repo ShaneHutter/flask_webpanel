@@ -27,7 +27,7 @@ class Config():
             raise NoConfigurationFile()
         with open( self.config_file , "r" ) as config_file:
             self.config = safe_load( config_file.read() )
-            self.app_name = config.get( "app" , {} ).get( "name" , "" )
+            self.app_name = self.config.get( "app" , {} ).get( "name" , "" )
 
     def get( self , config_path ):
         """Get a config via it's path.
