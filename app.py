@@ -16,11 +16,17 @@ from flask_compress import Compress
 
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-# Load site config - {{ app_name }}.yaml
-app_hostname = "localhost"
-app_ip = "127.0.0.1"
-app_ports = [ "8080" ]
-app_protocols = [ "http" , "https" ]
+# Load config
+with Config( "app.yml" ) as conf:
+    config = conf
+app_name = conf9g.get( "app.name" )
+
+
+# Determine APP URLs
+app_hostname = config.get( "app.hostname" )
+app_ip = config.get( "app.ip" )
+app_ports = config.get( "app.ports" )
+app_protocols = config.get( "app.protocols" )
 app_urls = [ 
     f"{protocol}://{host}:{port}" 
     for protocol , host , port in ( 
@@ -30,27 +36,31 @@ app_urls = [
         for port in app_ports 
         ) 
     ]
-app_use_compression = True
-app_static_url_path = ""
 
-redis_host = {
-    "host": "127.0.0.1",
-    "port": 6379,
-    }
-redis_url = "redis://{host}:{port}".format( **redis_host )
 
 
 
 # App setup
+app_static_url_path = confgi.get( "app.static_url_path" )
 app = Flask( __name__ , static_url_path = app_static_url_path )
 app.wsgi_app = ProxyFix( app.wsgi_app , x_proto = 1 , x_host = 1 )
 
+# Redis
+redis_conf = config.get( "redis" )
+redis_url = "redis://{host}:{port}".format( **redis_conf )
+redis = Redis( **redis_conf )
 
 # Session Setup
+_secret_key = redis.get( f"{app_name}_session_key" )
+if not _secret_key:
+    _secret_key = gen_session_key() # Add to fwp/session.py
 
 # Start Session
+Session( app )
 
 # Use Compression
+if config.get( "app.use_compression" ):
+    Compress( app )
 
 # Setup SocketIO
 _socketio = { 
