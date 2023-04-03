@@ -33,7 +33,7 @@ app_urls = [
     f"{protocol}://{host}:{port}" 
     for protocol , host , port in ( 
         ( protocol , host , port ) 
-        for protocol in protocols 
+        for protocol in app_protocols 
         for host in [ app_hostname , app_ip ]
         for port in app_ports 
         ) 
