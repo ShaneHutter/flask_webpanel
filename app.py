@@ -93,6 +93,6 @@ socketio = SocketIO( app , **_socketio )
 def index():
     data = {
         "title": app_name,
-        "panel": False,      # This would be determined by a login session
+        "panel": True,      # This would be determined by a login session
         }
     return render_template( "index.jinja", data = data )
