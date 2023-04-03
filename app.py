@@ -4,7 +4,8 @@
 
 #from eventlet   import monkey_patch ; monkey_patch()
 
-from fwp.config import Config
+from fwp.config     import Config
+from fwp.session    import gen_session_key
 
 from flask          import (
     Flask, 
@@ -15,6 +16,8 @@ from flask          import (
 from flask_socketio import SocketIO, emit
 from flask_session  import Session
 from flask_compress import Compress
+
+from redis  import Redis
 
 from werkzeug.middleware.proxy_fix import ProxyFix
 
