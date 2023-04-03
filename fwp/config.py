@@ -39,7 +39,7 @@ class Config():
         """
         _path_split_regex = r"(?<!\\)\."
         _config_path = re_split( _path_split_regex , config_path )
-        _env = envget( f"{self.app_name}_{'_'.join(_config_path)}".upper() )
+        _env = getenv( f"{self.app_name}_{'_'.join(_config_path)}".upper() )
 
         def _get_via_path( data , conf_path , default = None ):
             _ret = data 
