@@ -43,7 +43,7 @@ app_urls = [
 
 
 # App setup
-app_static_url_path = confgi.get( "app.static_url_path" )
+app_static_url_path = config.get( "app.static_url_path" )
 app = Flask( __name__ , static_url_path = app_static_url_path )
 app.wsgi_app = ProxyFix( app.wsgi_app , x_proto = 1 , x_host = 1 )
 
