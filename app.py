@@ -13,9 +13,11 @@ from flask          import (
     url_for,    session,
     )
 
-from flask_socketio import SocketIO, emit
-from flask_session  import Session
-from flask_compress import Compress
+from flask_socketio             import SocketIO, emit
+from flask_session              import Session
+from flask_compress             import Compress
+from flask_minify               import Minify
+from flask_minify.decorators    import minify
 
 from redis  import Redis
 
@@ -62,6 +64,13 @@ if not _secret_key:
     _secret_key = gen_session_key()
     redis.set( _session_key_name , _secret_key )
 
+# Minify
+"""
+    Use Minify decorator
+    @minify( html = True , js = True , cssless = True )
+"""
+Minify( app , passive = True )
+
 # Start Session
 Session( app )
 
@@ -80,6 +89,10 @@ _socketio = {
 socketio = SocketIO( app , **_socketio )
 
 @app.route( "/" )
+@minify( html = True , js = True , cssless = True )
 def index():
-    data = {}
+    data = {
+        "title": app_name,
+        "panel": False,      # This would be determined by a login session
+        }
     return render_template( "index.jinja", data = data )
