@@ -21,7 +21,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 # Load config
 with Config( "app.yml" ) as conf:
     config = conf
-app_name = conf9g.get( "app.name" )
+app_name = config.get( "app.name" )
 
 
 # Determine APP URLs
