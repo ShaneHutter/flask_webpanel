@@ -1,0 +1,4 @@
+{%- set js_file = data.get( "js_file" ) %}
+{%- set app_data = data.get( "app_data" ) %}
+{%- set style = data.get( "style" ) %}
+{%- include "js/%s.jinja" | format( js_file ) %}

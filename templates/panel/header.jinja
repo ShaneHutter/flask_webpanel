@@ -1,21 +1,20 @@
 {%- set panel_id = "panel_header" %}
-<div id="{{panel_id}}">
-Header panel
-</div>
-<script>
 {%- set panel_header_height = 77 %}
 {%- set static_style = {
                 "overflow": "hidden",
+                "overflowX": "hidden",
                 "position": "fixed",
+                "zIndex": 1,
                 "top": 0,
+                "left": 0,
                 "width": "100%",
                 "height": "%spx" | format( panel_header_height )
                 }
 %}
-{%- for property , value in static_style.items() %}
-{%-     if value is string %}
-{%-         set value = '"%s"' | format( value ) %}
-{%-     endif %}
-document.getElementById( "{{ panel_id }}" ).style.{{ property }} = {{ value }};
-{%- endfor %}
+{%- from "lib/style_js.jinja" import static_style_js with context %}
+<div id="{{panel_id}}">
+Header panel
+<script>
+{{ static_style_js }}
 </script>
+</div>

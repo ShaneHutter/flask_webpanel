@@ -10,7 +10,7 @@ from fwp.session    import gen_session_key
 from flask          import (
     Flask, 
     redirect,   request,    render_template,
-    url_for,    session,
+    url_for,    session,    abort,
     )
 
 from flask_socketio             import SocketIO, emit
@@ -22,6 +22,7 @@ from flask_minify.decorators    import minify
 from redis  import Redis
 
 from yaml   import safe_load
+from glob   import glob
 
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -90,21 +91,41 @@ _socketio = {
     }
 socketio = SocketIO( app , **_socketio )
 
+# App_data, define elsewhere
+app_data = {
+    "title": app_name,
+    "panel": True,      # This would be determined by a login session
+    "load_js": config.get( "site.load_js" ),
+    }
 
 @app.route( "/" )
 #@minify( html = True , js = True , cssless = True )
 def index():
-    data = {
-        "title": app_name,
-        "panel": True,      # This would be determined by a login session
-        "load_js": config.get( "site.load_js" ),
-        }
-    return render_template( "index.jinja", data = data )
+    return render_template( "index.jinja", data = app_data )
 
-@app.route( "/js/style.js" )
+@app.route( "/js/<string:js_file>.js" )
 #@minify( html = True , js = True , cssless = True )
-def style():
-    # Load Style
+def handle_js( js_file ):
+    # 404 if not available
+    available_js = []
+    for jinja_file in glob( "templates/js/*.jinja" ):
+        available_js.append( jinja_file.split( "/" )[ -1 ].split( "." )[ 0 ] )
+    if js_file not in available_js:
+        # Try static before 404
+        abort( 404 )
     with open( "app_style.yml" , "r" ) as style_file:
-        style = safe_load( style_file.read() )
-    return render_template( "js/style.jinja" , style = style )
+        style_data = safe_load( style_file.read() )
+    data = {
+        "app_ata": app_data,
+        "style": style_data,
+        "js_file": js_file,
+        }
+    return render_template( "js_loader.jinja" , data = data )
+
+    """
+    if js_file == "style": 
+        # Load Style
+        with open( "app_style.yml" , "r" ) as style_file:
+            style = safe_load( style_file.read() )
+        return render_template( "js/style.jinja" , style = style )
+    """
