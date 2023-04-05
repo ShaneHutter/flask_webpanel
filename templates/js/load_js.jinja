@@ -1,0 +1,4 @@
+{%- set load_js = data.get( "load_js" , [] ) %}
+{%- for script in load_js %}
+<script src="{{ script }}"></script>
+{%- endfor %}

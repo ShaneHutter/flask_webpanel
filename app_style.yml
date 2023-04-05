@@ -1,4 +1,8 @@
 #element_id:
 #  property: value
 body:
-  backgroud-color: '#5555FF'
+  backgroudColor: '#5555FF'
+foobar:
+  color: '#5555FF'
+
+  

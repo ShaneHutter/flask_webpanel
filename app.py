@@ -92,7 +92,7 @@ socketio = SocketIO( app , **_socketio )
 
 
 @app.route( "/" )
-@minify( html = True , js = True , cssless = True )
+#@minify( html = True , js = True , cssless = True )
 def index():
     data = {
         "title": app_name,
@@ -104,10 +104,9 @@ def index():
     return render_template( "index.jinja", data = data )
 
 @app.route( "/js/style.js" )
-@minify( html = True , js = True , cssless = True )
+#@minify( html = True , js = True , cssless = True )
 def style():
     # Load Style
     with open( "app_style.yml" , "r" ) as style_file:
         style = safe_load( style_file.read() )
-        print( style )
     return render_template( "js/style.jinja" , style = style )
