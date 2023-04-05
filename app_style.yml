@@ -1,8 +1,10 @@
 #element_id:
 #  property: value
 body:
-  backgroudColor: '#5555FF'
+  backgroundColor: '#5555FF'
 foobar:
+  backgroundColor: '#FFFFFF'
   color: '#5555FF'
-
-  
+panel_header:
+  backgroundColor: '#000042'
+  color: '#FFFF42'

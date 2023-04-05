@@ -12,3 +12,6 @@ app:
 redis:
   host: 127.0.0.1
   port: 6379
+site:
+  load_js:
+    - "js/style.js"

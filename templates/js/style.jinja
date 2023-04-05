@@ -1,12 +1,12 @@
-{%-  for element_id , properties in style.items() -%}
-{%-     for property , value in properties.items() -%}
-{%-         if value is string -%}
-{%-             set value = '"%s"' | format( value ) -%}
+{%-  for element_id , properties in style.items() %}
+{%-     for property , value in properties.items() %}
+{%-         if value is string %}
+{%-             set value = '"%s"' | format( value ) %}
 {%-         endif %}
-{%-       if element_id == "body" -%} {# If others are the same, use or here #}
+{%-       if element_id == "body" %} {#- If others are the same, use or here #}
 document.{{element_id}}.style.{{property}} = {{ value }};
-{%-       else -%}
+{%-       else %}
 document.getElementById( "{{ element_id }}" ).style.{{ property }} = {{ value }};
-{%        endif -%}
-{%-     endfor -%}
-{%-  endfor -%}
+{%        endif %}
+{%-     endfor %}
+{%-  endfor %}

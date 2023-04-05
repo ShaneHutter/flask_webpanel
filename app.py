@@ -97,9 +97,7 @@ def index():
     data = {
         "title": app_name,
         "panel": True,      # This would be determined by a login session
-        "load_js": [
-            "js/style.js",
-            ]
+        "load_js": config.get( "site.load_js" ),
         }
     return render_template( "index.jinja", data = data )
 

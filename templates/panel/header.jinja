@@ -1,4 +1,27 @@
 {%- set panel_id = "panel_header" %}
-<div class="{{panel_id}}" id="{{panel_id}}">
+<div id="{{panel_id}}">
 Header panel
 </div>
+<script>
+{%- set panel_header_height = 77 %}
+{%- set static_topbar_style = {
+                "overflow": "hidden",
+                "position": "fixed",
+                "top": 0,
+                "width": "100%",
+                }
+%}
+{%- for property , value in static_topbar_style.items() %}
+{%-     if value is string %}
+{%-         set value = '"%s"' | format( value ) %}
+{%-     endif %}
+document.getElementById( "{{ panel_id }}" ).style.{{ property }} = {{ value }};
+{%- endfor %}
+{%- set adjust_body_style = { "marginTop": "%spx" | format( panel_header_height ) } %}
+{%- for property , value in adjust_body_style.items() %}
+{%-     if value is string %}
+{%-         set value = '"%s"' | format( value ) %}
+{%-     endif %}
+document.body.style.{{ property }} = {{ value }};
+{%- endfor %}
+</script>
