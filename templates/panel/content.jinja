@@ -1,8 +1,21 @@
-{%- from "panel/header.jinja" import panel_header_height with context %}
+{%- from "lib/panel_postions.jinja" import panel_positions with context %}
 {%- set panel_id = "panel_content" %}
+{%- set top_border = panel_positions.get( "top" , 0 ) %}
+{%- set left_border = panel_positions.get( "left" , 0 ) %}
+{%- set right_border = panel_positions.get( "right" , 0 ) %}
 {%- set static_style = {
             "zIndex": 1,
             "position": "fixed",
-            "left": 
+            "top": "%spx" | format( top_borser ),
+            "left": "%spx" | format( left_border ),
+            "right": "%spx" | format( right_border ),
+            "height": "100%",
             }
 %}
+{%- from "lib/style_js.jinja" import static_style_js with context %}
+<div id="{{ panek_id }}">
+Content
+<script>
+{{ static_style_js }}
+</script>
+</div>

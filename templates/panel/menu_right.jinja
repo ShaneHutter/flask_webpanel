@@ -1,8 +1,8 @@
-{%- from "lib/panel_postions.jinja" import panel_postions with context %}
+{%- from "lib/panel_postions.jinja" import panel_positions with context %}
 {%- set panel_id = "panel_right_menu" %}
 {%- set panel_state = "expanded" %}
-{%- set panel_header_height = panel_positions.get( panel_state , {} ).get( "top" , 0 ) %}
-{%- set panel_width = panel_positions.get( panel_state , {} ).get( "left" , 0 ) %}
+{%- set panel_header_height = panel_positions.get( "top" , 0 ) %}
+{%- set panel_width = panel_positions.get( "left" , 0 ) %}
 {%- set static_style = {
             "overflow": "hidden",
             "overflowX": "hidden",
