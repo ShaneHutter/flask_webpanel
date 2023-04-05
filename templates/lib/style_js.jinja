@@ -1,0 +1,41 @@
+{#-
+    Import style_js
+
+    required context vars:
+      - style
+#}
+{%- set style_js = [] %}
+{%- if style is defined %}
+{%- set direct_style = [ "body" ] %}
+{%- for element_id , properties in style.items() %}
+{%-     for property , value in properties.items() %}
+{%-         if value is string %}
+{%-             set value = '"%s"' | format( value ) %}
+{%-         endif %}
+{%-         if element_id in direct_style %}
+{%-             do style_js.append( "document.%s.style.%s = %s;" | format( element_id , property , value ) ) %}
+{%-         else %}
+{%-             do style_js.append( "document.getElementById( \"%s\" ).style.%s = %s;" | format( element_id , property , value ) ) %}
+{%          endif %}
+{%-     endfor %}
+{%- endfor %}
+{%- endif %}
+{%- set style_js = "\n".join( style_js ) %}
+
+
+{#- 
+    Import: static_style_js 
+
+    required context vars:
+      - static_style
+#}
+{%- set static_style_js = [] %}
+{%- if static_style is defined %}
+{%-     for property , value in static_style.items() %}
+{%-         if value is string %}
+{%-             set value = '"%s"' | format( value ) %}
+{%-         endif %}
+{%          do static_style_js.append( "document.getElementById( %s ).style.%s = %s;" | format( panel_id , property , value ) ) %}
+{%-     endfor %}
+{%- endif %}
+{%- set static_style_js = "\n".join( static_style_js ) %}

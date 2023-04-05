@@ -1,18 +1,4 @@
 {%- from "panel/header.jinja" import panel_header_height with context %}
-{%- set direct_style = [ "body" ] %}
-{%- for element_id , properties in style.items() %}
-{%-     for property , value in properties.items() %}
-{%-         if value is string %}
-{%-             set value = '"%s"' | format( value ) %}
-{%-         endif %}
-{%-         if element_id in direct_style %}
-document.{{element_id}}.style.{{property}} = {{ value }};
-{%-         else %}
-document.getElementById( "{{ element_id }}" ).style.{{ property }} = {{ value }};
-{%          endif %}
-{%-     endfor %}
-{%- endfor %}
-{#- Static Style#}
 {%- set static_style = {
             "body": {
                 "margin": "0px",
@@ -20,15 +6,6 @@ document.getElementById( "{{ element_id }}" ).style.{{ property }} = {{ value }}
                 },
             }
 %}
-{%- for element_id , properties in static_style.items() %}
-{%-     for property , value in properties.items() %}
-{%-         if value is string %}
-{%-             set value = '"%s"' | format( value ) %}
-{%-         endif %}
-{%-         if element_id in direct_style %}
-document.{{element_id}}.style.{{property}} = {{ value }};
-{%-         else %}
-document.getElementById( "{{ element_id }}" ).style.{{ property }} = {{ value }};
-{%-         endif %}
-{%-     endfor %}
-{%- endfor %}
+{%- from "lib/style_js.jinja" import style_js , static_style_js with context %}
+{{ style_js }}
+{{ static_style_js }}
