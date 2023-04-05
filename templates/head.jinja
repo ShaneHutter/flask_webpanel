@@ -1,5 +1,6 @@
 {%- set title = data.get( "title" ) %}
 {%- set panel = data.get( "panel" ) %}
+{%- set load_js = data.get( "load_js" , [] ) %}
 <head>
 {%- if title %}
     <title>
@@ -7,4 +8,7 @@
         {%- if panel %} - Admin Panel{% endif %}
     </title>
 {%- endif %}
+{%- for script in load_js %}
+<script src="{{ script }}"></script>
+{%- endfor %}
 </head>

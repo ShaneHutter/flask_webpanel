@@ -21,6 +21,8 @@ from flask_minify.decorators    import minify
 
 from redis  import Redis
 
+from yaml   import safe_load
+
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 # Load config
@@ -88,11 +90,24 @@ _socketio = {
     }
 socketio = SocketIO( app , **_socketio )
 
+
 @app.route( "/" )
 @minify( html = True , js = True , cssless = True )
 def index():
     data = {
         "title": app_name,
         "panel": True,      # This would be determined by a login session
+        "load_js": [
+            "js/style.js",
+            ]
         }
     return render_template( "index.jinja", data = data )
+
+@app.route( "/js/style.js" )
+@minify( html = True , js = True , cssless = True )
+def style():
+    # Load Style
+    with open( "app_style.yml" , "r" ) as style_file:
+        style = safe_load( style_file.read() )
+        print( style )
+    return render_template( "js/style.jinja" , style = style )

@@ -1,0 +1,7 @@
+<script>
+{%-  for element_id , properties in style.items() %}
+{%-     for property , value in properties.items() %}
+document.getElementById( "{{ element_id }}" ).style.{{ property }} = "{{ value }}";
+{%-     endfor %}
+{%-  endfor %}
+</script>
