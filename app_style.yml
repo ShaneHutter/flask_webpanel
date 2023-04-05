@@ -11,3 +11,9 @@ panel_header:
 panel_left_menu:
   backgroundColor: '#004200'
   color: '#FF42FF'
+panel_right_menu:
+  backgroundColor: '#004242'
+  color: '#FFFFFF'
+panel_footer:
+  backgroundColor: '#424200'
+  color: '#FFFFFF'
