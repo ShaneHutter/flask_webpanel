@@ -1,12 +1,34 @@
-{%-  for element_id , properties in style.items() %}
+{%- from "panel/header.jinja" import panel_header_height with context %}
+{%- set direct_style = [ "body" ] %}
+{%- for element_id , properties in style.items() %}
 {%-     for property , value in properties.items() %}
 {%-         if value is string %}
 {%-             set value = '"%s"' | format( value ) %}
 {%-         endif %}
-{%-       if element_id == "body" %} {#- If others are the same, use or here #}
+{%-         if element_id in direct_style %}
 document.{{element_id}}.style.{{property}} = {{ value }};
-{%-       else %}
+{%-         else %}
 document.getElementById( "{{ element_id }}" ).style.{{ property }} = {{ value }};
-{%        endif %}
+{%          endif %}
 {%-     endfor %}
-{%-  endfor %}
+{%- endfor %}
+{#- Static Style#}
+{%- set static_style = {
+            "body": {
+                "margin": "0px",
+                "marginTop": "%spx" | format( panel_header_height ),
+                },
+            }
+%}
+{%- for element_id , properties in static_style.items() %}
+{%-     for property , value in properties.items() %}
+{%-         if value is string %}
+{%-             set value = '"%s"' | format( value ) %}
+{%-         endif %}
+{%-         if element_id in direct_style %}
+document.{{element_id}}.style.{{property}} = {{ value }};
+{%-         else %}
+document.getElementById( "{{ element_id }}" ).style.{{ property }} = {{ value }};
+{%-         endif %}
+{%-     endfor %}
+{%- endfor %}

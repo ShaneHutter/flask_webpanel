@@ -1,0 +1,31 @@
+{%- from "panel/header.jinja" import panel_header_height with context %}
+{%- set panel_id = "panel_left_menu" %}
+{%- set panel_state = "expanded" %}
+<div id="{{ panel_id }}">
+Left Menu
+</div>
+<script>
+{%- set panel_width = {
+            "collapsed": 77,
+            "expanded": 250,
+            }
+%}
+{%- set static_style = {
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "zIndex": 1,
+            "position": "fixed",
+            "left": 0,
+            "top": 0,
+            "top": "%spx" | format( panel_header_height ),
+            "width": "%spx" | format( panel_width.get( panel_state , panel_width.get( "expanded" , 0 ) ) ),
+            "height": "100%",
+            }
+%}
+{%- for property , value in static_style.items() %}
+{%-     if value is string %}
+{%-         set value = '"%s"' | format( value ) %}
+{%-     endif %}
+document.getElementById( "{{ panel_id }}" ).style.{{ property }} = {{ value }};
+{%- endfor %}
+</script>

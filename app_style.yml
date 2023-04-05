@@ -8,3 +8,6 @@ foobar:
 panel_header:
   backgroundColor: '#000042'
   color: '#FFFF42'
+panel_left_menu:
+  backgroundColor: '#004200'
+  color: '#FF42FF'
