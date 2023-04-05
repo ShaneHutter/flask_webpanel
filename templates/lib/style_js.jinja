@@ -4,9 +4,9 @@
     required context vars:
       - style
 #}
+{%- set direct_style = [ "body" ] %}
 {%- set style_js = [] %}
 {%- if style is defined %}
-{%-     set direct_style = [ "body" ] %}
 {%-     for element_id , properties in style.items() %}
 {%-         for property , value in properties.items() %}
 {%-             if value is string %}

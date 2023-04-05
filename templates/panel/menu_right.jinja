@@ -1,0 +1,27 @@
+{%- from "panel/header.jinja" import panel_header_height with context %}
+{%- from "panel/footer.jinja" import panel_footer_height with context %}
+{%- set panel_id = "panel_right_menu" %}
+{%- set panel_state = "expanded" %}
+{%- set panel_width = {
+            "expanded": 320,
+            "compact": 16,
+            }
+%}
+{%- set static_style = {
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "zIndex": 1,
+            "position": "fixed",
+            "right": 0,
+            "top": "%spx" | format( panel_header_height ),
+            "bottom": "%spx" | format( panel_footer_height ),
+            "width": "%spx" | format( panel_width.get( panel_state , panel_width.get( "expanded" , 0 ) ) ),
+            }
+%}
+{%- from "lib/style_js.jinja" import static_style_js with context %}
+<div id="{{ panel_id }}">
+Right Menu
+<script>
+{{ static_style_js }}
+</script>
+</div>

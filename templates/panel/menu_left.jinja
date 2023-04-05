@@ -18,14 +18,10 @@
             "height": "100%",
             }
 %}
+{%- from "lib/style_js.jinja" import static_style_js with context %}
 <div id="{{ panel_id }}">
 Left Menu
-</div>
 <script>
-{%- for property , value in static_style.items() %}
-{%-     if value is string %}
-{%-         set value = '"%s"' | format( value ) %}
-{%-     endif %}
-document.getElementById( "{{ panel_id }}" ).style.{{ property }} = {{ value }};
-{%- endfor %}
+{{ static_style_js }}
 </script>
+</div>

@@ -1,11 +1,3 @@
 {%- from "panel/header.jinja" import panel_header_height with context %}
-{%- set static_style = {
-            "body": {
-                "margin": "0px",
-                "marginTop": "%spx" | format( panel_header_height ),
-                },
-            }
-%}
-{%- from "lib/style_js.jinja" import style_js , static_style_js with context %}
+{%- from "lib/style_js.jinja" import style_js with context %}
 {{ style_js }}
-{{ static_style_js }}
