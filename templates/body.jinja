@@ -1,8 +1,5 @@
-{%- set panel = data.get( "panel" ) %}
 <body>
-{%- if panel %}
-{%-     include "panel.jinja" %}
-{%- else %}
-{%-     include "site.jinja" %}
-{%- endif %}
+{%- include "panel/header.jinja" %}
+{%- include "panel/body.jinja" %}
+{%- include "panel/footer.jinja" %}
 </body>
