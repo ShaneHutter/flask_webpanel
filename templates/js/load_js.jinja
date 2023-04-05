@@ -1,3 +1,5 @@
+{#  This is currently placing app_data defined JS at the bottom of body #}
+{#      Move out of js dir #}
 {%- set load_js = data.get( "load_js" , [] ) %}
 {%- for script in load_js %}
 <script src="{{ script }}"></script>
