@@ -1,11 +1,20 @@
+{%- from "lib/panel_postions.jinja" import panel_positions with context %}
 {%- set panel_id = "panel_footer"%}
-{%- set panel_state = "expanded" %}
-{%- set panel_footer_height = {
-            "compact": 3,
-            "expanded": 32,
+{%- set panel_footer_height = panel_positions.get( "bottom" , 0 ) %}
+{%- set static_style = {
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "zIndex": 10,
+            "position": "absolute",
+            "width": "100%",
+            "bottom": 0,
+            "height": "%spx" | format( panel_footer_height ),
             }
 %}
-{%- set static_style = {} %}
+{%- from "lib/style_js.jinja" import static_style_js with context %}
 <div id="{{ panel_id }}">
 footer
+<script>
+{{ static_style_js }}
+</script>
 </div>
