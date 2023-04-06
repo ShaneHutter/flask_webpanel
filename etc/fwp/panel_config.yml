@@ -1,0 +1,11 @@
+positions:  # Relative to content boarder
+  default:
+    top: 77
+    left: 250
+    right: 320
+    bottom: 16
+  compact:
+    top: 32
+    left: 32
+    right: 32
+    bottom: 4

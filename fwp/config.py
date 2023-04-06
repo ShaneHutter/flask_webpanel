@@ -9,8 +9,10 @@ from os     import getenv
 from re     import split    as re_split
 
 class Config():
-    def __init__( self , config_file = None ):
-        self.config_file = config_file
+    def __init__( self , **config_files ):
+        self.app_config_file = config_files.get( "app_config_file" )
+        self.panel_config_file = config_files.get( "panel_config_file" )
+        self.style_config_file = config_files.get( "style_config_file" )
         self.config = None
         self.defaults = {}
 
@@ -22,8 +24,10 @@ class Config():
         # Raise/Log for exception on exit
         return
 
-    def load_config( self ):
-        if not self.config_file:
+    def load_configs( self ):
+        if not self.app_config_file \
+            or not self.style_config_file \
+            or not self.panel_config_file:
             raise NoConfigurationFile()
         with open( self.config_file , "r" ) as config_file:
             self.config = safe_load( config_file.read() )

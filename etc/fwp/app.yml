@@ -1,0 +1,17 @@
+app:
+  name: fwp
+  hostname: localhost
+  ip: 127.0.0.1
+  ports:
+    - 8080
+  protocols:
+    - http
+    - https
+  use_compression: True
+  static_url_path: ""
+redis:
+  host: 127.0.0.1
+  port: 6379
+site:
+  load_js:
+    - "js/style.js"
