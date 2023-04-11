@@ -10,12 +10,15 @@
             "bottom": 0,
             "left": 0,
             "height": "%spx" | format( panel_footer_height ),
+            "textAlign": "right",
             }
 %}
 {%- from "lib/style_js.jinja" import static_style_js with context %}
+{%- set title = data.get( "title" , "" ) %}
+{%- set version = data.get( "pkg_info" , {} ).get( "version" , "ERROR_VERSION" ) %}
 <div id="{{ panel_id }}">
-footer
-<script>
-{{ static_style_js }}
-</script>
+{{  title }} - {{ version }}
+    <script>
+{{      static_style_js }}
+    </script>
 </div>

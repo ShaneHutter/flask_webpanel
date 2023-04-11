@@ -4,6 +4,7 @@
 
 from eventlet   import monkey_patch ; monkey_patch()
 
+from fwp            import PKG_INFO
 from fwp.config     import Config
 from fwp.session    import gen_session_key
 
@@ -99,6 +100,7 @@ app_data = {
     "panel": config.get( "extra.panel" ),
     "load_js": config.get( "site.load_js" ),
     "left_menu": config.get( "left_menu" ),
+    "pkg_info": PKG_INFO,
     }
 
 @app.route( "/" )

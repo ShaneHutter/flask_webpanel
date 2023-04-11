@@ -17,13 +17,51 @@
 {%- set left_menu = data.get( "left_menu" , {} ) %}
 <div id="{{ panel_id }}">
 {#  Load plugins into left menu #}
+{%- set menu_item_ids = {} %}
 {%- for catagory , plugins in left_menu.items() %}
-    <button type="button" class="collapsible">{{ catagory }}</button>
-    <div id="{{panel_id}}_{{catagory}}">
+{%-     set catagory_id = "%s_%s" | format( panel_id , catagory ) %}
+{%-     set _update = menu_item_ids.update(
+                {
+                    catagory_id: [],
+                    }
+                )
+%}
+    <button type="button" id="{{ catagory_id }}" class="collapsible">{{ catagory }}</button>
+    <div id="{{ catagory_id }}" class="content">
 {%-     for plugin , yaml_file in plugins.items() %}
-{{plugin}} - {{yaml_file}}<br>
+{%-         set plugin_id = "%s_%s" | format( catagory_id , plugin ) %}
+{%-         set _append = menu_item_ids[ catagory_id ].append( plugin_id ) %}
+{{plugin_id}}: {{plugin}} - {{yaml_file}}<br>
 {%-     endfor %}
     </div>
+{%- endfor %}
+{#- Script for menu item collapsing #}
+    <script>
+var col = document.getElementsByClassName( "collapsible" );
+var item;
+for ( item = 0 ; item < col.length ; item++ ){
+    col[ item ].addEventListener( "click" , function(){
+        this.classList.toggle( "active" );
+        var content = this.nextElementSibling;
+        if( content.style.display === "block" ){
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    });
+}
+    </script>
+
+    <p>
+
+{%- for catagory , plugins in menu_item_ids.items() %}
+{{      catagory }}<br>
+    <ul>
+{%-     for plugin in plugins %}
+        <li>{{ plugin }}</li>
+{%-     endfor %}
+    </ul>
+    <p>
 {%- endfor %}
 
     <script>
