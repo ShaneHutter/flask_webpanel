@@ -45,10 +45,10 @@ def plugin_loader( plugin_dir ):
             _basename = basename( _dir )
             with open( _plugin_info_file , "r" ) as plugin_info:
                 _ret[ _basename ] = { "name": _basename }
+                plugin_info_data = safe_load( plugin_info.read() )
+                if plugin_info_data:
+                    _ret[ _basename ].update( plugin_info_data )
                 _ret[ _basename ].update(
-                    safe_load(
-                        plugin_info.read()
-                        )
                     )
                 if not _ret[ _basename ].get( "catagory" ):
                     _ret[ _basename ].update( { "catagory": _basename } )
