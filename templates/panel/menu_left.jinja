@@ -51,19 +51,7 @@ for ( item = 0 ; item < col.length ; item++ ){
     });
 }
     </script>
-
-    <p>
-
-{%- for catagory , plugins in menu_item_ids.items() %}
-{{      catagory }}<br>
-    <ul>
-{%-     for plugin in plugins %}
-        <li>{{ plugin }}</li>
-{%-     endfor %}
-    </ul>
-    <p>
-{%- endfor %}
-
+{#  Panel static style #}
     <script>
 {{      static_style_js }}
     </script>
