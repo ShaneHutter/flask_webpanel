@@ -1,0 +1,26 @@
+{%- for catagory , plugins in left_menu.items() %}
+{%-     set catagory_id = "%s_%s" | format( panel_id , catagory ) %}
+    <button type="button" id="{{ catagory_id }}" class="menu_catagory">{{ catagory }}</button>
+    <div id="{{ catagory_id }}" class="menu_plugins" style="display: block">
+{%-     for plugin , yaml_file in plugins.items() %}
+{%-         set plugin_id = "%s_%s" | format( catagory_id , plugin ) %}
+{{plugin_id}}: {{plugin}} - {{yaml_file}}<br>
+{%-     endfor %}
+    </div>
+    <br>
+{%- endfor %}
+{#- Script for menu item collapsing #}
+    <script>
+var col = document.getElementsByClassName( "menu_catagory" );
+var item;
+for ( item = 0 ; item < col.length ; item++ ){
+    col[ item ].addEventListener( "click" , function(){
+        this.classList.toggle( "active" );
+        var content = this.nextElementSibling;
+        if( content.style.display === "block" ){
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    });
+}
