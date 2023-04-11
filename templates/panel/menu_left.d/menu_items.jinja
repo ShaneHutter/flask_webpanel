@@ -1,6 +1,20 @@
 {%- from "lib/left_menu_style.jinja" import menu_bar_styles with context %}
-{%- set catagory_style = menu_bar_styles.get( "menu_catagory" , {} ) %}
-{%- set plugin_style = menu_bar_styles.get( "menu_plugins" , {} ) %}
+
+{%- set left_menu = {} %}
+{%- set plugins = data.get( "plugins" , {} ) %}
+{%- for _ , plugin in plugins.items() %}
+{%-     set plugin_catagory = plugin.get( "catagory" ) %}
+{%-     set _update = left_menu.update( { plugin_catagory: {} } ) %}
+{%- endfor %}
+{%- set catagories = catagories | unique %}
+{%- for _ , plugin in plugins.items() %}
+{%-     set plugin_name = plugin.get( "name", "" ) %}
+{%-     set plugin_catagory = plugin.get( "catagory" ) %}
+{%-     for key , value in plugin.items() %}
+{%-         set _update = left_menu[ plugin_catagory ].update( { plugin_name: plugin } ) %}
+{%-     endfor %}
+{%- endfor %}
+
 {%- for catagory , plugins in left_menu.items() %}
 {%-     set catagory_id = "%s_%s" | format( panel_id , catagory ) %}
     <button type="button" id="{{ catagory_id }}" class="menu_catagory">{{ catagory }}</button>

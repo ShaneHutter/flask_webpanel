@@ -7,6 +7,7 @@ from eventlet   import monkey_patch ; monkey_patch()
 from fwp            import PKG_INFO
 from fwp.config     import Config
 from fwp.session    import gen_session_key
+from fwp.loaders    import plugin_loader
 
 from flask          import (
     Flask, 
@@ -101,6 +102,7 @@ app_data = {
     "load_js": config.get( "site.load_js" ),
     "left_menu": config.get( "left_menu" ),
     "pkg_info": PKG_INFO,
+    "plugins": plugin_loader( "etc/fwp/plugins" ),
     }
 
 @app.route( "/" )
