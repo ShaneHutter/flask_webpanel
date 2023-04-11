@@ -9,11 +9,10 @@ from os     import getenv
 from re     import split    as re_split
 
 class Config():
-    def __init__( self , **config_files ):
-        self.app_config_file = config_files.get( "app_config_file" )
-        self.panel_config_file = config_files.get( "panel_config_file" )
-        self.style_config_file = config_files.get( "style_config_file" )
+    def __init__( self , config_file ):
+        self.config_file = config_file
         self.config = None
+        self.extra_configs = {}
         self.defaults = {}
 
     def __enter__( self ):
@@ -24,14 +23,30 @@ class Config():
         # Raise/Log for exception on exit
         return
 
-    def load_configs( self ):
-        if not self.app_config_file \
-            or not self.style_config_file \
-            or not self.panel_config_file:
-            raise NoConfigurationFile()
+    def load_config( self ):
+        # Load main app config
         with open( self.config_file , "r" ) as config_file:
-            self.config = safe_load( config_file.read() )
-            self.app_name = self.config.get( "app" , {} ).get( "name" , "" )
+            self.config = safe_load(
+                config_file.read()
+                )
+        # Set app_name
+        self.app_name = self.config.get( "app" , {} ).get( "name" , "app_name" ).replace( " " , "_" )
+        # Load extra configs defined in the main config
+        _extra_configs = self.config.get( "extra_config" , {} )
+        _extra_config_dir = _extra_configs.pop( "config_dir" , "" )
+        if _extra_configs:
+            self.config[ "extra" ] = {} 
+            for name , path in _extra_configs.items():
+                with open( f"{_config_dir}/{filename}" , "r" ) as config_file:
+                    self.config[ "extra" ].update(
+                        {
+                            name: safe_load(
+                                config_file.read()
+                                )
+                            }
+                        )
+
+
 
     def get( self , config_path ):
         """Get a config via it's path.

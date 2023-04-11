@@ -27,13 +27,8 @@ from glob   import glob
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 # Load config
-_config_dir = "etc/swp"
-_config_files = {
-    "app": f"{_config_dir}/app.yml",
-    "panel": f"{_config_dir}/app_style.yml",
-    "style": f"{_config_dir}/panel_config.yml",
-    }
-with Config( _config_files ) as conf:
+_config_file = "etc/fwp/app.yml"
+with Config( _config_file ) as conf:
     config = conf
 app_name = config.get( "app.name" )
 
