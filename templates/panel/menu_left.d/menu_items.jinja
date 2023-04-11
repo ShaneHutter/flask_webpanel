@@ -1,3 +1,6 @@
+{%- from "lib/left_menu_style.jinja" import menu_bar_styles with context %}
+{%- set catagory_style = menu_bar_styles.get( "menu_catagory" , {} ) %}
+{%- set plugin_style = menu_bar_styles.get( "menu_plugins" , {} ) %}
 {%- for catagory , plugins in left_menu.items() %}
 {%-     set catagory_id = "%s_%s" | format( panel_id , catagory ) %}
     <button type="button" id="{{ catagory_id }}" class="menu_catagory">{{ catagory }}</button>
@@ -9,8 +12,19 @@
     </div>
     <br>
 {%- endfor %}
+
+
+{#- Scripts #}
+<script>
+{#- Scripts for set menu item style #}
+{%-     for class_name , style in menu_bar_styles.items() %}
+{%-         for attribute , value in style.items() %}
+for( const element of menu_item ){
+    element.style.{{ attribute }} = "{{ value }}";
+}
+{%-         endfor %}
+{%-     endfor %}
 {#- Script for menu item collapsing #}
-    <script>
 var col = document.getElementsByClassName( "menu_catagory" );
 var item;
 for ( item = 0 ; item < col.length ; item++ ){
@@ -24,3 +38,4 @@ for ( item = 0 ; item < col.length ; item++ ){
         }
     });
 }
+</script>
