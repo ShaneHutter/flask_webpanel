@@ -1,10 +1,4 @@
 {%- set title = data.get( "title" ) %}
-{%- set panel = data.get( "panel" ) %}
 <head>
-{%- if title %}
-    <title>
-        {{ title }}
-        {%- if panel %} - Admin Panel{% endif %}
-    </title>
-{%- endif %}
+{%- if title %}<title>{{ title }}</title>{% endif %}
 </head>

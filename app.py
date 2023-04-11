@@ -95,7 +95,7 @@ socketio = SocketIO( app , **_socketio )
 # App_data, define elsewhere
 app_data = {
     "title": app_name,
-    "panel": True,      # This would be determined by a login session
+    "panel": config.get( "extra.panel" ),
     "load_js": config.get( "site.load_js" ),
     }
 
