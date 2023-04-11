@@ -10,16 +10,15 @@
 {{plugin_id}}: {{plugin}} - {{yaml_file}}<br>
 {%-     endfor %}
     </div>
-    <br>
 {%- endfor %}
-
 
 {#- Scripts #}
 <script>
 {#- Scripts for set menu item style #}
 {%-     for class_name , style in menu_bar_styles.items() %}
+let {{ class_name }} = document.getElementsByClassName( "{{ class_name }}" );
 {%-         for attribute , value in style.items() %}
-for( const element of menu_item ){
+for( const element of {{ class_name }} ){
     element.style.{{ attribute }} = "{{ value }}";
 }
 {%-         endfor %}
