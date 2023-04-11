@@ -1,4 +1,5 @@
 {%- set title = data.get( "title" ) %}
 <head>
 {%- if title %}<title>{{ title }}</title>{% endif %}
+{%- include "meta.jinja" %}
 </head>

@@ -1,6 +1,7 @@
 app:
   name: fwp
   hostname: localhost
+  description: "I am Error!"
   ip: 127.0.0.1
   ports:
     - 8080
@@ -9,6 +10,12 @@ app:
     - https
   use_compression: True
   static_url_path: ""
+left_menu: # these should be path to plugins yaml
+  foo:
+    bar: "foobar" 
+    baz: "foobarbaz"
+  spam:
+    eggs: "spam spam spam and more spam"
 redis:
   host: 127.0.0.1
   port: 6379
@@ -19,3 +26,6 @@ extra_config:
   config_dir: etc/fwp
   panel: panel_config.yml
   style: app_style.yml
+#locale:
+#  language: en_AU
+#  encoding: UTF-8

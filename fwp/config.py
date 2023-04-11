@@ -7,6 +7,7 @@ from .exceptions    import *
 from yaml   import safe_load
 from os     import getenv
 from re     import split    as re_split
+from locale import getdefaultlocale
 
 class Config():
     def __init__( self , config_file ):
@@ -14,6 +15,7 @@ class Config():
         self.config = None
         self.extra_configs = {}
         self.defaults = {}
+        self.language , self.encoding = getdefaultlocale()
 
     def __enter__( self ):
         self.load_config()
@@ -45,7 +47,14 @@ class Config():
                                 )
                             }
                         )
-
+        _locale = self.config.get( "locale" )
+        if _locale:
+            _lang = locale.get( "language" )
+            if _lang:
+                self.language = _lang
+            _encode = locale.get( "encoding" )
+            if _encode:
+                self.encoding = _encode
 
 
     def get( self , config_path ):

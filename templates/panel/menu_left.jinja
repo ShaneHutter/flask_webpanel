@@ -14,9 +14,19 @@
             }
 %}
 {%- from "lib/style_js.jinja" import static_style_js with context %}
+{%- set left_menu = data.get( "left_menu" , {} ) %}
 <div id="{{ panel_id }}">
-Left Menu
-<script>
-{{ static_style_js }}
-</script>
+{#  Load plugins into left menu #}
+{%- for catagory , plugins in left_menu.items() %}
+    <button type="button" class="collapsible">{{ catagory }}</button>
+    <div id="{{panel_id}}_{{catagory}}">
+{%-     for plugin , yaml_file in plugins.items() %}
+{{plugin}} - {{yaml_file}}<br>
+{%-     endfor %}
+    </div>
+{%- endfor %}
+
+    <script>
+{{      static_style_js }}
+    </script>
 </div>
