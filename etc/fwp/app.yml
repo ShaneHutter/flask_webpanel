@@ -15,7 +15,7 @@ redis:
 site:
   load_js:
     - "js/style.js"
-configs:
+extra_config:
   config_dir: etc/fwp
   panel: panel_config.yml
   style: app_style.yml

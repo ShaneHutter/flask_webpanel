@@ -114,19 +114,10 @@ def handle_js( js_file ):
     if js_file not in available_js:
         # Try static before 404
         abort( 404 )
-    with open( "app_style.yml" , "r" ) as style_file:
-        style_data = safe_load( style_file.read() )
+    style_data = config.get( "extra.style" )
     data = {
         "app_ata": app_data,
         "style": style_data,
         "js_file": js_file,
         }
     return render_template( "js_loader.jinja" , data = data )
-
-    """
-    if js_file == "style": 
-        # Load Style
-        with open( "app_style.yml" , "r" ) as style_file:
-            style = safe_load( style_file.read() )
-        return render_template( "js/style.jinja" , style = style )
-    """

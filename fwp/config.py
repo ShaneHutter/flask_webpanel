@@ -36,8 +36,8 @@ class Config():
         _extra_config_dir = _extra_configs.pop( "config_dir" , "" )
         if _extra_configs:
             self.config[ "extra" ] = {} 
-            for name , path in _extra_configs.items():
-                with open( f"{_config_dir}/{filename}" , "r" ) as config_file:
+            for name , filename in _extra_configs.items():
+                with open( f"{_extra_config_dir}/{filename}" , "r" ) as config_file:
                     self.config[ "extra" ].update(
                         {
                             name: safe_load(
