@@ -6,6 +6,7 @@
 
 {%- set left_menu = {} %}
 {%- set plugins = data.get( "plugins" , {} ) %}
+
 {%- for _ , plugin in plugins.items() %}
 {%-     set plugin_catagory = plugin.get( "catagory" ) %}
 {%-     set _update = left_menu.update( { plugin_catagory: {} } ) %}
@@ -53,7 +54,9 @@ for( const element of {{ classname }}_dynamic ){
 {%-     for js_event , dynamic_style in js_event_style.items() %}
     element.{{ js_event }} = function(){
 {%-          for attribute , value in dynamic_style.items() %}
-        element.style.{{ attribute }} = "{{ value }}";
+        if ( ! element.classList.contains( "active") ){
+            element.style.{{ attribute }} = "{{ value }}";
+        }
 {%-         endfor %}
     } 
 {%-     endfor %}
@@ -104,6 +107,44 @@ for ( let e = 0 ; e < menu_catagories.length ; e++ ){
 {%- set catagory_styles = menu_bar_styles.get( "menu_catagory" , {} ) %}
 {%- for attribute , value in catagory_styles.items() %}
                 current_catagory.style.{{ attribute }} = "{{value}}";
+{%- endfor %}
+            }
+        }
+    });
+}
+
+{#- Script to handle onclick for menu_plugin items #}
+let menu_plugin_all = document.getElementsByClassName( "menu_plugin" );
+for ( let e = 0 ; e < menu_plugin_all.length ; e++ ){
+    let current_menu_plugin = menu_plugin_all[ e ];
+    let parent_menu_plugins = current_menu_plugin.parentElement;
+    let parent_catagory = parent_menu_plugins.previousElementSibling;
+    current_menu_plugin.addEventListener( "click" , function(){
+        if ( ! this.classList.contains( "active" ) ){
+            this.classList.toggle( "active" );
+        }
+        for ( let i = 0 ; i < menu_plugin_all.length ; i++ ){
+            if ( e !== i ){
+                let other_menu_plugin = menu_plugin_all[ i ];
+                if( other_menu_plugin.classList.contains( "active" ) ){
+                    other_menu_plugin.classList.toggle( "active" );
+                }
+            }
+        }
+        {#- Update active parents #}
+        {#- Update style for active an inactive#}
+        for ( let i = 0 ; i < menu_plugin_all.length ; i++ ){
+            let update_menu_plugin = menu_plugin_all[ i ];
+            let update_menu_plugin_active = update_menu_plugin.classList.contains( "active" );
+            if ( update_menu_plugin_active ){
+{%- set plugin_active_styles = menu_bar_active_styles.get( "menu_plugin" , {} ) %}
+{%- for attribute , value in plugin_active_styles.items() %}
+                update_menu_plugin.style.{{ attribute }} = "{{ value }}";
+{%- endfor %}
+            } else {
+{%- set plugin_styles = menu_bar_styles.get( "menu_plugin" , {} ) %}
+{%- for attribute , value in plugin_styles.items() %}
+                update_menu_plugin.style.{{ attribute }} = "{{ value }}";
 {%- endfor %}
             }
         }
