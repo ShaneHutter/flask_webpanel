@@ -1,4 +1,8 @@
-{%- from "lib/left_menu_style.jinja" import menu_bar_styles with context %}
+{%- from "lib/left_menu_style.jinja" import 
+            menu_bar_styles, 
+            menu_bar_dynamic_styles,
+            menu_bar_active_styles,
+            with context %}
 
 {%- set left_menu = {} %}
 {%- set plugins = data.get( "plugins" , {} ) %}
@@ -7,6 +11,7 @@
 {%-     set _update = left_menu.update( { plugin_catagory: {} } ) %}
 {%- endfor %}
 {%- set catagories = catagories | unique %}
+
 {%- for _ , plugin in plugins.items() %}
 {%-     set plugin_name = plugin.get( "name", "" ) %}
 {%-     set plugin_catagory = plugin.get( "catagory" ) %}
@@ -21,7 +26,9 @@
     <div id="{{ catagory_id }}" class="menu_plugins" style="display: block">
 {%-     for plugin , yaml_file in plugins.items() %}
 {%-         set plugin_id = "%s_%s" | format( catagory_id , plugin ) %}
-{{plugin_id}}: {{plugin}} - {{yaml_file}}<br>
+        <div id="{{ plugin_id }}" class="menu_plugin">
+{{          plugin}}
+        </div>
 {%-     endfor %}
     </div>
 {%- endfor %}
@@ -29,26 +36,79 @@
 {#- Scripts #}
 <script>
 {#- Scripts for set menu item style #}
-{%-     for class_name , style in menu_bar_styles.items() %}
-let {{ class_name }} = document.getElementsByClassName( "{{ class_name }}" );
-{%-         for attribute , value in style.items() %}
-for( const element of {{ class_name }} ){
+{%- for classname , style in menu_bar_styles.items() %}
+let {{ classname }} = document.getElementsByClassName( "{{ classname }}" );
+for( const element of {{ classname }} ){
+{%-     for attribute , value in style.items() %}
     element.style.{{ attribute }} = "{{ value }}";
-}
-{%-         endfor %}
 {%-     endfor %}
+};
+{%- endfor %}
+
+
+{#- Scripts to set dynamic style on menu items #}
+{%- for classname , js_event_style in menu_bar_dynamic_styles.items() %}
+let {{ classname }}_dynamic = document.getElementsByClassName( "{{ classname }}" );
+for( const element of {{ classname }}_dynamic ){
+{%-     for js_event , dynamic_style in js_event_style.items() %}
+    element.{{ js_event }} = function(){
+{%-          for attribute , value in dynamic_style.items() %}
+        element.style.{{ attribute }} = "{{ value }}";
+{%-         endfor %}
+    } 
+{%-     endfor %}
+};
+{%- endfor %}
+
+
 {#- Script for menu item collapsing #}
-var col = document.getElementsByClassName( "menu_catagory" );
-var item;
-for ( item = 0 ; item < col.length ; item++ ){
-    col[ item ].addEventListener( "click" , function(){
-        this.classList.toggle( "active" );
-        var content = this.nextElementSibling;
-        if( content.style.display === "block" ){
-            content.style.display = "none";
-        } else {
+let menu_catagories = document.getElementsByClassName( "menu_catagory" );
+for ( let e = 0 ; e < menu_catagories.length ; e++ ){
+    menu_catagories[ e ].addEventListener( "click" , function(){
+        let content = this.nextElementSibling;
+            if( content.style.display === "block" ){
+                content.style.display = "none";
+            } else {
             content.style.display = "block";
+            }
+        let all_catagories = document.getElementsByClassName( "menu_catagory" );
+        for ( let i = 0 ; i <  all_catagories.length; i++ ){
+            let current_catagory = all_catagories[ i ];
+            if ( current_catagory.classList.contains( "active" ) === true && e !== i ){
+                console.log( `off ${i}` );
+                current_catagory.classList.toggle( "active" );
+                console.log( `${i} ${current_active}` );
+            } else if ( e === i ) {
+                console.log( `toggle ${i}` );
+                current_catagory.classList.toggle( "active" );
+                current_active = current_catagory.classList.contains( "active" );
+                console.log( `${i} ${current_active}` );
+            }
+            {#- Toggle off if collapsing #}
+            if( 
+                content.style.display === "none" 
+                &&
+                e === i
+                &&
+                current_catagory.classList.contains( "active" )
+                ){
+                current_catagory.classList.toggle( "active" );
+            }
+            let is_active = current_catagory.classList.contains( "active" );
+            if ( is_active ){
+{%- set catagory_active_styles = menu_bar_active_styles.get( "menu_catagory" , {} ) %}
+{%- for attribute , value in catagory_active_styles.items() %}
+                current_catagory.style.{{ attribute }} = "{{value}}";
+{%- endfor %}
+            } else {
+{%- set catagory_styles = menu_bar_styles.get( "menu_catagory" , {} ) %}
+{%- for attribute , value in catagory_styles.items() %}
+                current_catagory.style.{{ attribute }} = "{{value}}";
+{%- endfor %}
+            }
         }
     });
 }
+
+
 </script>

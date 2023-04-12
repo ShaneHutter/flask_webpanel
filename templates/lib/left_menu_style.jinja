@@ -3,6 +3,10 @@
     later, tie them into the actual style
 
     This returns a dctionatry for styles
+
+        * menu_catagory: Catagory titles for menu items
+        * menu_pluggins: A Div that expands containing the plugins in neach catagory
+        * menu_plugin: A div inside of menu_plugis that contains the menu link for the individual plugin.
 #}
 {%-  set menu_bar_styles = {
         "menu_catagory": 
@@ -10,7 +14,7 @@
             "backgroundColor": "#112211",
             "color": "#FFF",
             "curser": "pointer",
-            "padding": "6px",
+            "padding": "6px 0px 6px 16px",
             "width": "100%",
             "border": "none",
             "textAlign": "left",
@@ -18,15 +22,49 @@
             "fontSize": "15px",
             },
         "menu_plugins": {
-            "padding": "0 18px",
+            "padding": "2px 2px 2px 16px",
             "display": "none",
             "overflow": "hidden",
-            "backgroundColor": "#224422",
-            "color": "#FFF"
+            "backgroundColor": "#660000",
+            "color": "#FFF",
+            "right": "100%",
+            },
+        "menu_plugin": {
+            "backgroundColor": "#006666",
+            "color": "#FFF",
+            "padding": "4px",
+            "right": "100%",
+            "textAlign": "right",
             },
         }
 %}
 {%- set menu_bar_dynamic_styles = {
-        "onmouseenter": {},
+        "menu_catagory": {
+            "onmouseenter": {},
+            },
+        "menu_plugins": {
+            "onmouseover": {},
+            },
+        "menu_plugin": {
+            "onmouseenter": {
+                "backgroundColor": "#007656",
+                "color": "#F00",
+                "cursor": "pointer",
+                },
+            "onmouseleave": {
+                "backgroundColor": "#006666",
+                "color": "#FFF",
+                "cursor": "auto",
+                },
+            },
+        }
+%}
+{%- set menu_bar_active_styles = {
+        "menu_catagory": {
+            "backgroundColor": "#F22",
+            },
+        "menu_plugin": {
+            "backgroundColor": "#008252",
+            },
         }
 %}
