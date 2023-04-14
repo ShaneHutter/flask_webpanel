@@ -38,9 +38,8 @@ function menu_states( clear = false ) {
 
 function update_active_styles(){
     {#- Catagories #}
-    let menu_catagories = document.getElementsByClassName( "menu_catagories" );
+    let menu_catagories = document.getElementsByClassName( "menu_catagory" );
     for ( let e = 0 ; e < menu_catagories.length ; e++ ){
-        console.log( e );
         let active = menu_catagories[ e ].classList.contains( "active" );
     {%- set catagory_active_styles = menu_bar_active_styles.get( "menu_catagory" , {} ) %}
     {%- set catagory_styles = menu_bar_styles.get( "menu_catagory" , {} ) %}
@@ -167,5 +166,9 @@ for ( let e = 0 ; e < menu_plugin_all.length ; e++ ){
             }
         }
         update_active_styles();
+        {#- The current active menu_plugin affects content in "content" div #}
+        let plugin_key = this.innerText;
+        let content_div = document.getElementById( "panel_content" );
+        content_div.innerText = plugin_key;
     });
 }
