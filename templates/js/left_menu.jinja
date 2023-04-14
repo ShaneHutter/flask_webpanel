@@ -8,9 +8,88 @@
             with context %}
 
 {#- Functions #}
-console.log( "test" );
+function set_class_active_state( element , state ){
+    let element_state = element.classList.contains( "active" );
+    if ( 
+        ( element_state && !state ) || ( !element_state && state )
+        ){
+        element.classList.toggle( "active" );
+    }
+}
 
-{#- Scripts for set menu item style #}
+function menu_states( clear = false ) {
+    let debug_catagories = document.getElementsByClassName( "menu_catagory" );
+    let debug_plugin_divs = document.getElementsByClassName( "menu_plugins" );
+    let debug_plugins = document.getElementsByClassName( "menu_plugin" );
+    if ( clear ){ console.clear(); }
+    for ( let e = 0 ; e < debug_catagories.length ; e++ ){
+        let catagory_state = debug_catagories[ e ].classList.contains( "active" );
+        console.log( `Catagory: ${e} ${catagory_state}` );
+    }
+    for ( let e = 0 ; e < debug_plugin_divs.length ; e++ ){
+        let catagory_state = debug_plugin_divs[ e ].classList.contains( "active" );
+        console.log( `Plugin Divs: ${e} ${catagory_state}` );
+    }
+    for ( let e = 0 ; e < debug_plugins.length ; e++ ){
+        let catagory_state = debug_plugins[ e ].classList.contains( "active" );
+        console.log( `Plugins: ${e} ${catagory_state}` );
+    }
+}
+
+function update_active_styles(){
+    {#- Catagories #}
+    let menu_catagories = document.getElementsByClassName( "menu_catagories" );
+    for ( let e = 0 ; e < menu_catagories.length ; e++ ){
+        console.log( e );
+        let active = menu_catagories[ e ].classList.contains( "active" );
+    {%- set catagory_active_styles = menu_bar_active_styles.get( "menu_catagory" , {} ) %}
+    {%- set catagory_styles = menu_bar_styles.get( "menu_catagory" , {} ) %}
+        if ( active ){
+    {%- for attribute , value in catagory_active_styles.items() %}
+            menu_catagories[ e ].style.{{ attribute }} = "{{ value }}";
+    {%- endfor %}
+        } else {
+    {%- for attribute , value in catagory_styles.items() %}
+            menu_catagories[ e ].style.{{ attribute }} = "{{ value }}";
+    {%- endfor %}
+        }
+    }
+    {#- Plugin Divs #}
+    let plugin_divs = document.getElementsByClassName( "menu_plugins" );
+    for ( let e = 0 ; e < plugin_divs.length ; e++ ){
+        let active = plugin_divs[ e ].classList.contains( "active" );
+    {%- set plugin_div_active_styles = menu_bar_active_styles.get( "menu_plugins" , {} ) %}
+    {%- set plugin_div_styles = menu_bar_styles.get( "menu_plugins" , {} ) %}
+        if ( active ){
+    {%- for attribute , value in plugin_div_active_styles.items() %}
+            plugin_divs[ e ].style.{{ attribute }} = "{{ value }}";
+    {%- endfor %}
+        } else {
+    {%- for attribute , value in plugin_div_styles.items() %}
+            plugin_divs[ e ].style.{{ attribute }} = "{{ value }}";
+    {%- endfor %}
+        }
+    }
+    {#- Pluggins #}
+    let menu_plugin_all = document.getElementsByClassName( "menu_plugin" );
+    for ( let e = 0 ; e < menu_plugin_all.length ; e++ ){
+        let active = menu_plugin_all[ e ].classList.contains( "active" );
+    {%- set plugin_active_styles = menu_bar_active_styles.get( "menu_plugin" , {} ) %}
+    {%- set plugin_styles = menu_bar_styles.get( "menu_plugin" , {} ) %}
+        if ( active ){
+    {%- for attribute , value in plugin_active_styles.items() %}
+            menu_plugin_all[ e ].style.{{ attribute }} = "{{ value }}";
+    {%- endfor %}
+        } else {
+    {%- for attribute , value in plugin_styles.items() %}
+            menu_plugin_all[ e ].style.{{ attribute }} = "{{ value }}";
+    {%- endfor %}
+        }
+    }
+}
+
+{#- Initial menu styles #}
+{#- menu item style #}
 {%- for classname , style in menu_bar_styles.items() %}
 let {{ classname }} = document.getElementsByClassName( "{{ classname }}" );
 for( const element of {{ classname }} ){
@@ -19,9 +98,7 @@ for( const element of {{ classname }} ){
 {%-     endfor %}
 };
 {%- endfor %}
-
-
-{#- Scripts to set dynamic style on menu items #}
+{#- dynamic style on menu items #}
 {%- for classname , js_event_style in menu_bar_dynamic_styles.items() %}
 let {{ classname }}_dynamic = document.getElementsByClassName( "{{ classname }}" );
 for( const element of {{ classname }}_dynamic ){
@@ -49,41 +126,17 @@ for ( let e = 0 ; e < menu_catagories.length ; e++ ){
             content.style.display = "block";
             }
         let all_catagories = document.getElementsByClassName( "menu_catagory" );
+        {#- Set active state for catagories #}
         for ( let i = 0 ; i <  all_catagories.length; i++ ){
             let current_catagory = all_catagories[ i ];
-            if ( current_catagory.classList.contains( "active" ) === true && e !== i ){
-                console.log( `off ${i}` );
-                current_catagory.classList.toggle( "active" );
-                console.log( `${i} ${current_active}` );
-            } else if ( e === i ) {
-                console.log( `toggle ${i}` );
-                current_catagory.classList.toggle( "active" );
-                current_active = current_catagory.classList.contains( "active" );
-                console.log( `${i} ${current_active}` );
-            }
+            set_class_active_state( current_catagory , e === i );
             {#- Toggle off if collapsing #}
-            if( 
-                content.style.display === "none" 
-                &&
-                e === i
-                &&
-                current_catagory.classList.contains( "active" )
-                ){
-                current_catagory.classList.toggle( "active" );
+            if( content.style.display === "none"  ){
+                set_class_active_state( current_catagory , false );
             }
             let is_active = current_catagory.classList.contains( "active" );
-            if ( is_active ){
-{%- set catagory_active_styles = menu_bar_active_styles.get( "menu_catagory" , {} ) %}
-{%- for attribute , value in catagory_active_styles.items() %}
-                current_catagory.style.{{ attribute }} = "{{value}}";
-{%- endfor %}
-            } else {
-{%- set catagory_styles = menu_bar_styles.get( "menu_catagory" , {} ) %}
-{%- for attribute , value in catagory_styles.items() %}
-                current_catagory.style.{{ attribute }} = "{{value}}";
-{%- endfor %}
-            }
         }
+        update_active_styles();
     });
 }
 
@@ -91,36 +144,28 @@ for ( let e = 0 ; e < menu_catagories.length ; e++ ){
 let menu_plugin_all = document.getElementsByClassName( "menu_plugin" );
 for ( let e = 0 ; e < menu_plugin_all.length ; e++ ){
     let current_menu_plugin = menu_plugin_all[ e ];
-    let parent_menu_plugins = current_menu_plugin.parentElement;
-    let parent_catagory = parent_menu_plugins.previousElementSibling;
     current_menu_plugin.addEventListener( "click" , function(){
-        if ( ! this.classList.contains( "active" ) ){
-            this.classList.toggle( "active" );
-        }
+        {#- Set current active #}
+        let parent_menu_plugins = current_menu_plugin.parentElement;
+        let parent_catagory = parent_menu_plugins.previousElementSibling;
+        set_class_active_state( this , true );
+        set_class_active_state( parent_menu_plugins , true );
+        set_class_active_state( parent_catagory , true );
+        {#- Set others inactive #}
         for ( let i = 0 ; i < menu_plugin_all.length ; i++ ){
             if ( e !== i ){
                 let other_menu_plugin = menu_plugin_all[ i ];
-                if( other_menu_plugin.classList.contains( "active" ) ){
-                    other_menu_plugin.classList.toggle( "active" );
+                let other_parent_menu_plugins = other_menu_plugin.parentElement;
+                let other_parent_catagory = other_parent_menu_plugins.previousElementSibling;
+                set_class_active_state( other_menu_plugin , false );
+                if ( other_parent_menu_plugins !== parent_menu_plugins ){
+                    set_class_active_state( other_parent_menu_plugins , false );
+                }
+                if ( other_parent_catagory !== parent_catagory ){
+                    set_class_active_state( other_parent_catagory , false );
                 }
             }
         }
-        {#- Update active parents #}
-        {#- Update style for active and inactive#}
-        for ( let i = 0 ; i < menu_plugin_all.length ; i++ ){
-            let update_menu_plugin = menu_plugin_all[ i ];
-            let update_menu_plugin_active = update_menu_plugin.classList.contains( "active" );
-            if ( update_menu_plugin_active ){
-{%- set plugin_active_styles = menu_bar_active_styles.get( "menu_plugin" , {} ) %}
-{%- for attribute , value in plugin_active_styles.items() %}
-                update_menu_plugin.style.{{ attribute }} = "{{ value }}";
-{%- endfor %}
-            } else {
-{%- set plugin_styles = menu_bar_styles.get( "menu_plugin" , {} ) %}
-{%- for attribute , value in plugin_styles.items() %}
-                update_menu_plugin.style.{{ attribute }} = "{{ value }}";
-{%- endfor %}
-            }
-        }
+        update_active_styles();
     });
 }
