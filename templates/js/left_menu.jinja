@@ -124,18 +124,6 @@ for ( let e = 0 ; e < menu_catagories.length ; e++ ){
             } else {
             content.style.display = "block";
             }
-        let all_catagories = document.getElementsByClassName( "menu_catagory" );
-        {#- Set active state for catagories #}
-        for ( let i = 0 ; i <  all_catagories.length; i++ ){
-            let current_catagory = all_catagories[ i ];
-            set_class_active_state( current_catagory , e === i );
-            {#- Toggle off if collapsing #}
-            if( content.style.display === "none"  ){
-                set_class_active_state( current_catagory , false );
-            }
-            let is_active = current_catagory.classList.contains( "active" );
-        }
-        update_active_styles();
     });
 }
 
